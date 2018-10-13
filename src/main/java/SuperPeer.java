@@ -1,6 +1,7 @@
 import ether.TransactionsManager;
-
 import io.left.rightmesh.mesh.JavaMeshManager;
+import io.left.rightmesh.mesh.MeshManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,12 +46,9 @@ public class SuperPeer {
             System.exit(0);
         }
         tm.start();
-        System.out.println("Superpeer is ready!");
+        initHooks();
 
-        // Stop everything when runtime is killed.
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            SuperPeer.this.finish();
-        }));
+        System.out.println("Superpeer is ready!");
 
         if (interactive) {
             // Block for user input if running in interactive mode.
@@ -73,6 +71,20 @@ public class SuperPeer {
             // Infinitely loop if run in quiet mode.
             while (true) { /* Loop until killed. */ }
         }
+    }
+
+    private void initHooks() {
+        // Stop everything when runtime is killed.
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            SuperPeer.this.finish();
+        }));
+
+        mm.on(MeshManager.DATA_RECEIVED, (event) ->
+                // TODO: store in DB
+                System.out.println("Data received: " + event.toString()));
+
+        mm.on(MeshManager.DATA_DELIVERED, (event) ->
+                System.out.println("Data delivered: " + event.toString()));
     }
 
     /**

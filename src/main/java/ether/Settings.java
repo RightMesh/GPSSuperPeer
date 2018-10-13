@@ -1,12 +1,11 @@
 package ether;
 
-import io.left.rightmesh.util.EtherUtility;
-import io.left.rightmesh.util.MeshUtility;
 import io.left.rightmesh.util.ConversionUtility;
 import org.ethereum.core.CallTransaction;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
