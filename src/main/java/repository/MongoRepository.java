@@ -10,16 +10,17 @@ import com.mongodb.client.model.changestream.FullDocument;
 import model.Latitude;
 import model.Longitude;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import static java.time.Instant.now;
 import static java.util.Arrays.asList;
 
 public class MongoRepository implements Repository {
-    private final static Logger LOGGER = Logger.getLogger(MongoRepository.class.getName());
+    private final static Logger LOGGER = LoggerFactory.getLogger(MongoRepository.class.getName());
     private MongoCollection<Document> collection;
 
     public MongoRepository() {
