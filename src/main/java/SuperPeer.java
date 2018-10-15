@@ -4,12 +4,11 @@ import io.left.rightmesh.mesh.MeshManager;
 import model.Latitude;
 import model.Longitude;
 import repository.MongoRepository;
+import util.BytesToDouble;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 public class SuperPeer {
     //TODO: Add logger instead of system.out
@@ -99,15 +98,8 @@ public class SuperPeer {
         mm.on(MeshManager.DATA_RECEIVED, (event) -> {
             MeshManager.DataReceivedEvent dataEvent = (MeshManager.DataReceivedEvent) event;
             assert dataEvent.data.length == Double.SIZE * 2;
-
-            ByteBuffer buffer = ByteBuffer.allocate(Double.SIZE);
-            buffer.put(Arrays.copyOfRange(dataEvent.data, 0, 63));
-            Latitude latitude = Latitude.of(buffer.getDouble());
-            buffer.clear();
-            buffer.put(Arrays.copyOfRange(dataEvent.data, 64, 127));
-            Longitude longitude = Longitude.of(buffer.getDouble());
-
-            repository.insert(latitude, longitude);
+            double[] latLongValues = BytesToDouble.convertMany(dataEvent.data, 2);
+            repository.insert(Latitude.of(latLongValues[0]), Longitude.of(latLongValues[1]));
             System.out.println("Data received: " + dataEvent.toString());
         });
 

@@ -79,14 +79,23 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.4'
     implementation 'com.google.guava:guava:23.0'
-    implementation ('io.left.rightmesh:rightmesh-java-library-dev:0.9.0')
+    implementation('io.left.rightmesh:rightmesh-java-library-dev:0.9.0')
     compile 'org.mongodb:mongodb-driver-async:3.8.2'
-    // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
 
     // https://mvnrepository.com/artifact/org.ethereum/ethereumj-core
-    implementation (group: 'org.ethereum', name: 'ethereumj-core', version: '1.4.5-RELEASE')
+    implementation(group: 'org.ethereum', name: 'ethereumj-core', version: '1.4.5-RELEASE')
     //compile 'org.ethereum:solcJ-all:0.4.10'
+
+    testCompileOnly(
+            'junit:junit:4.12'
+    )
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+            'org.junit.vintage:junit-vintage-engine:5.1.0'
+    )
 }
 
 ////Sets the repo we will pull the parity vagrant setup from. Also specifies
