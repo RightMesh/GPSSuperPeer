@@ -47,8 +47,8 @@ public class MongoRepository implements Repository {
     public void insert(Latitude latitude, Longitude longitude) {
         Date now = Date.from(now());
         collection.insertOne(new Document("timestamp", now.toString())
-                .append("lat", latitude.asString())
-                .append("long", longitude.asString()), (result, t) -> {
+                .append("lat", latitude.asDouble())
+                .append("long", longitude.asDouble()), (result, t) -> {
             LOGGER.info("Inserted update at: " + now.toString());
         });
     }

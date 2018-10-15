@@ -1,17 +1,17 @@
 package model;
 
 public class Latitude {
-    private String value;
+    private double value;
 
-    public Latitude(String value) {
+    public Latitude(double value) {
         this.value = value;
     }
 
-    public String asString() {
+    public double asDouble() {
         return value;
     }
 
-    public static Latitude of(String value) {
+    public static Latitude of(double value) {
         return new Latitude(value);
     }
 }

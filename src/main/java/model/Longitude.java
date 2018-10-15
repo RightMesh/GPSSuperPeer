@@ -1,17 +1,17 @@
 package model;
 
 public class Longitude {
-    private String value;
+    private double value;
 
-    public Longitude(String value) {
+    public Longitude(double value) {
         this.value = value;
     }
 
-    public String asString() {
+    public double asDouble() {
         return value;
     }
 
-    public static Longitude of(String value) {
+    public static Longitude of(double value) {
         return new Longitude(value);
     }
 }

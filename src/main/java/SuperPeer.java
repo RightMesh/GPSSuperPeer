@@ -8,6 +8,8 @@ import repository.MongoRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class SuperPeer {
     //TODO: Add logger instead of system.out
@@ -95,9 +97,18 @@ public class SuperPeer {
         Runtime.getRuntime().addShutdownHook(new Thread(SuperPeer.this::finish));
 
         mm.on(MeshManager.DATA_RECEIVED, (event) -> {
-            // TODO: get actual data, not event
-            repository.insert(Latitude.of(event.toString()), Longitude.of(event.toString()));
-            System.out.println("Data received: " + event.toString());
+            MeshManager.DataReceivedEvent dataEvent = (MeshManager.DataReceivedEvent) event;
+            assert dataEvent.data.length == Double.SIZE * 2;
+
+            ByteBuffer buffer = ByteBuffer.allocate(Double.SIZE);
+            buffer.put(Arrays.copyOfRange(dataEvent.data, 0, 63));
+            Latitude latitude = Latitude.of(buffer.getDouble());
+            buffer.clear();
+            buffer.put(Arrays.copyOfRange(dataEvent.data, 64, 127));
+            Longitude longitude = Longitude.of(buffer.getDouble());
+
+            repository.insert(latitude, longitude);
+            System.out.println("Data received: " + dataEvent.toString());
         });
 
 
