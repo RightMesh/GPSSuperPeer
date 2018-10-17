@@ -1,3 +1,5 @@
+package superPeer;
+
 import dagger.Module;
 import dagger.Provides;
 import io.left.rightmesh.mesh.JavaMeshManager;

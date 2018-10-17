@@ -69,5 +69,5 @@ dependencies {
     )
 }
 
-mainClassName = 'SuperPeer'
+mainClassName = 'superPeer.SuperPeer'
 

@@ -1,3 +1,5 @@
+package superPeer;
+
 import io.left.rightmesh.mesh.MeshManager;
 import io.left.rightmesh.util.RightMeshException;
 import model.Latitude;
