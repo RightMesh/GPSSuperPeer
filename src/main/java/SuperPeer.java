@@ -1,101 +1,35 @@
-import ether.TransactionsManager;
-import io.left.rightmesh.mesh.JavaMeshManager;
 import io.left.rightmesh.mesh.MeshManager;
+import io.left.rightmesh.util.RightMeshException;
 import model.Latitude;
 import model.Longitude;
-import repository.MongoRepository;
+import repository.Repository;
 import util.BytesToDouble;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.inject.Inject;
 
 public class SuperPeer {
-    //TODO: Add logger instead of system.out
-    public static final String TAG = SuperPeer.class.getCanonicalName();
+    @Inject
+    Repository repository;
+    @Inject
+    MeshManager meshManager;
 
-    private static final String EXIT_CMD = "exit";
-    private static final String CLOSE_CHANNEL_CMD = "close";
+    private SuperPeer() {
+        DaggerAppComponent
+                .builder()
+                .build()
+                .inject(this);
 
-    JavaMeshManager mm;
-    private boolean isRunning = true;
-    private TransactionsManager tm;
+        System.out.println("Superpeer MeshID: " + meshManager.getUuid());
 
-    // TODO: should be injected
-    private MongoRepository repository;
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                meshManager.stop();
+            } catch (RightMeshException e) {
+                e.printStackTrace();
+            }
+        }));
 
-    public static void main(String[] args) {
-        if (args.length > 0 && (args[0].equals("-h") || args[0].equals("--headless"))) {
-            // Doesn't read from STDIN if run with `-h` or `--headless`.
-            // Useful for backgrounding.
-            SuperPeer serviceMode = new SuperPeer(false);
-        } else {
-            // Default condition, runs in interactive mode.
-            SuperPeer interactiveMode = new SuperPeer(true);
-        }
-    }
-
-    public SuperPeer(boolean interactive) {
-        initMeshManager();
-        initTransactionManager();
-        initHooks();
-
-        System.out.println("Superpeer is ready!");
-
-        initInteractiveMode(interactive);
-    }
-
-    private void initInteractiveMode(boolean interactive) {
-        if (interactive) {
-            // Block for user input if running in interactive mode.
-            String msg;
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            do {
-                try {
-                    msg = br.readLine();
-                    processInput(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    break;
-                }
-            } while (isRunning);
-
-            // Clean up and exit when exit command is entered.
-            finish();
-            System.exit(0);
-        } else {
-            // Infinitely loop if run in quiet mode.
-            while (true) { /* Loop until killed. */ }
-        }
-    }
-
-    private void initMeshManager() {
-        mm = new JavaMeshManager(true);
-
-        System.out.println("Superpeer MeshID: " + mm.getUuid());
-        System.out.println("Superpeer is waiting for library ... ");
-        try {
-            Thread.sleep(200);
-
-        } catch (InterruptedException ignored) {
-        }
-    }
-
-    private void initTransactionManager() {
-        tm = TransactionsManager.getInstance(mm);
-        if (tm == null) {
-            System.out.println("Failed to get TransactionManager from library. Superpeer is shutting down ...");
-            mm.stop();
-            System.exit(0);
-        }
-        tm.start();
-    }
-
-    private void initHooks() {
-        repository = new MongoRepository();
-        Runtime.getRuntime().addShutdownHook(new Thread(SuperPeer.this::finish));
-
-        mm.on(MeshManager.DATA_RECEIVED, (event) -> {
+        meshManager.on(MeshManager.DATA_RECEIVED, (event) -> {
             MeshManager.DataReceivedEvent dataEvent = (MeshManager.DataReceivedEvent) event;
             assert dataEvent.data.length == Double.SIZE * 2;
             double[] latLongValues = BytesToDouble.convertMany(dataEvent.data, 2);
@@ -104,53 +38,15 @@ public class SuperPeer {
         });
 
 
-        mm.on(MeshManager.DATA_DELIVERED, (event) ->
+        meshManager.on(MeshManager.DATA_DELIVERED, (event) ->
                 System.out.println("Data delivered: " + event.toString()));
     }
 
-    /**
-     * Default to interactive mode.
-     */
-    public SuperPeer() {
-        this(true);
-    }
+    public static void main(String[] args) {
+        new SuperPeer();
 
-    /**
-     * Shut down mesh functionality cleanly. Must be run on exit or port will remain bound.
-     */
-    private void finish() {
-        tm.stop();
-        mm.stop();
-    }
-
-    private void processInput(String msg) {
-        if (msg.equals(EXIT_CMD)) {
-            isRunning = false;
-            return;
+        for (; ;) {
+            // run
         }
-
-        String[] args = msg.split(" ");
-        if (args.length == 0) {
-            return;
-        }
-
-        switch (args[0]) {
-            case CLOSE_CHANNEL_CMD:
-                processCloseCmd(args);
-                break;
-
-            default:
-                System.out.println("Invalid command.");
-                break;
-        }
-    }
-
-    private void processCloseCmd(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Invalid args.");
-            return;
-        }
-
-        tm.closeChannels(args[1]);
     }
 }

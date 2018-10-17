@@ -3,7 +3,7 @@ package util;
 import java.nio.ByteBuffer;
 
 public class BytesToDouble {
-    public static double convertSingle(byte[] bytes) {
+    static double convertSingle(byte[] bytes) {
         if (bytes.length != Double.BYTES) {
             throw new IllegalArgumentException("Byte array length is not " + Double.BYTES);
         }

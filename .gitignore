@@ -5,7 +5,7 @@
 parity.log
 
 #license
-src/main/assets/
+src/superPeer/assets/
 
 # Ignore Gradle GUI config
 gradle-app.setting
