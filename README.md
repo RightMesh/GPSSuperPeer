@@ -37,5 +37,6 @@ Start the mongo daemon with `mongod --dbpath <path/to/datastore>`
 Run the Super with `./build/install/Superpeer/bin/Superpeer`
 
 Run the web that marks the currently recorded GPS coords with `node app.js <here-app-id> <here-app-code>`
+- You can create a HERE account [here](https://developer.here.com/plans?create=Freemium-Basic&keepState=true&step=account), or ask me for existing credentials
 
 
