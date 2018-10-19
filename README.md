@@ -24,9 +24,9 @@ This was all tested with the following:
  - Mongo Async Driver 3.8.2
  - JUnit 5.10
 
-*See `build.gradle` for the latest*
+*See [build.gradle](https://github.com/conbrad/GPSSuperPeer/blob/212481d54bf239d6abc24121e8dc6ed4c149a44b/build.gradle#L51) for the latest*
 
-*For JS dependencies see `src/main/web/package.json`*
+*For JS dependencies see [package.json](https://github.com/conbrad/GPSSuperPeer/blob/212481d54bf239d6abc24121e8dc6ed4c149a44b/src/main/web/package.json#L11)*
  
 
 ## Running the Superpeer
