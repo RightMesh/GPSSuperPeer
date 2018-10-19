@@ -1,7 +1,7 @@
 {
   "name": "gps-superpeer",
   "version": "1.0.0",
-  "description": "Maps recorded GPS coordinates to a map",
+  "description": "Marks recorded GPS coordinates to a map",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

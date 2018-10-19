@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const routes = require('./routes'); // Imports routes for the products
+const routes = require('./routes');
 const mongoose = require('mongoose');
 
 hereCreds = process.argv.slice(2);
