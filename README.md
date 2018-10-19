@@ -23,9 +23,11 @@ This was all tested with the following:
  - Dagger 2.17
  - Mongo Async Driver 3.8.2
  - JUnit 5.10
- - For JS dependencies see `src/main/web/package.json`
- 
+
 *See `build.gradle` for the latest*
+
+*For JS dependencies see `src/main/web/package.json`*
+ 
 
 ## Running the Superpeer
 
@@ -34,7 +36,7 @@ Generate the binary with
 
 Start the mongo daemon with `mongod --dbpath <path/to/datastore>`
 
-Run the Super with `./build/install/Superpeer/bin/Superpeer`
+Run the SuperPeer with `./build/install/Superpeer/bin/Superpeer`
 
 Run the web that marks the currently recorded GPS coords with `node app.js <here-app-id> <here-app-code>`
 - You can create a HERE account [here](https://developer.here.com/plans?create=Freemium-Basic&keepState=true&step=account), or ask me for existing credentials
