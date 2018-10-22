@@ -7,6 +7,7 @@ import com.mongodb.async.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.changestream.FullDocument;
+import io.left.rightmesh.id.MeshId;
 import model.Latitude;
 import model.Longitude;
 import org.bson.Document;
@@ -41,13 +42,13 @@ public class MongoRepository implements Repository {
                         (result, throwable) -> {
                             singleResultCallback.onResult();
                         });
-
     }
 
     @Override
-    public void insert(Latitude latitude, Longitude longitude) {
+    public void insert(MeshId remoteMeshId, Latitude latitude, Longitude longitude) {
         Date now = Date.from(now());
         collection.insertOne(new Document("timestamp", now.toString())
+                .append("meshId", remoteMeshId.toString())
                 .append("lat", latitude.asDouble())
                 .append("long", longitude.asDouble()), (result, t) -> {
             LOGGER.info("Inserted update at: " + now.toString());
