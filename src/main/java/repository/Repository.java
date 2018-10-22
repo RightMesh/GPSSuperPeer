@@ -7,5 +7,5 @@ import model.Longitude;
 public interface Repository {
     void registerUpdateCallbacks(SingleResultCallback singleResultCallback,
                                  LatestDocumentCallback latestDocumentCallback);
-    void insert(MeshId remoteMeshId, Latitude latitude, Longitude longitude);
+    void insert(MeshId remoteMeshId, Latitude latitude, Longitude longitude, MeshId superPeerMeshId);
 }

@@ -21,7 +21,7 @@ import static java.time.Instant.now;
 import static java.util.Arrays.asList;
 
 public class MongoRepository implements Repository {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MongoRepository.class.getName());
+    private final static Logger logger = LoggerFactory.getLogger(MongoRepository.class.getName());
     private MongoCollection<Document> collection;
 
     public MongoRepository() {
@@ -45,13 +45,14 @@ public class MongoRepository implements Repository {
     }
 
     @Override
-    public void insert(MeshId remoteMeshId, Latitude latitude, Longitude longitude) {
+    public void insert(MeshId remoteMeshId, Latitude latitude, Longitude longitude, MeshId superPeerMeshId) {
         Date now = Date.from(now());
         collection.insertOne(new Document("timestamp", now.toString())
-                .append("meshId", remoteMeshId.toString())
+                .append("remoteMeshId", remoteMeshId.toString())
+                .append("superPeerMeshId", superPeerMeshId.toString())
                 .append("lat", latitude.asDouble())
                 .append("long", longitude.asDouble()), (result, t) -> {
-            LOGGER.info("Inserted update at: " + now.toString());
+            logger.info("Inserted update at: " + now.toString());
         });
     }
 }

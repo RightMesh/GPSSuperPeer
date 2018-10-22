@@ -39,7 +39,14 @@ public class SuperPeer {
             MeshManager.DataReceivedEvent dataEvent = (MeshManager.DataReceivedEvent) event;
             assert dataEvent.data.length == Double.SIZE * 2;
             double[] latLongValues = BytesToDouble.convertMany(dataEvent.data, 2);
-            repository.insert(event.peerUuid, Latitude.of(latLongValues[0]), Longitude.of(latLongValues[1]));
+
+            repository.insert(
+                    event.peerUuid,
+                    Latitude.of(latLongValues[0]),
+                    Longitude.of(latLongValues[1]),
+                    meshManager.getUuid()
+            );
+
             logger.info("Data received: " + dataEvent.toString());
         });
 
