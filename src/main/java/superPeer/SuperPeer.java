@@ -12,7 +12,7 @@ import util.BytesToDouble;
 import javax.inject.Inject;
 
 public class SuperPeer {
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Inject
     Repository repository;
